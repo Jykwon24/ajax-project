@@ -3,18 +3,18 @@ body {
   color: aliceblue;
   /* stylelint-disable-next-line font-family-name-quotes */
   font-family: "Overpass", sans-serif;
-  font-size: 17px;
+  font-size: 1rem;
   list-style: none;
 }
 
 h1 {
   font-family: "Dancing Script", cursive;
-  font-size: 60px;
+  font-size: 4rem;
 }
 
 h3 {
   font-family: "Dancing Script", cursive;
-  font-size: 25px;
+  font-size: 1.5rem;
 }
 
 p {
