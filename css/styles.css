@@ -1,0 +1,33 @@
+body {
+  background-color: #df4747;
+  color: aliceblue;
+  /* stylelint-disable-next-line font-family-name-quotes */
+  font-family: "Overpass", sans-serif;
+  font-size: 1rem;
+  list-style: none;
+}
+
+h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: 4rem;
+}
+
+h3 {
+  font-family: "Dancing Script", cursive;
+  font-size: 1.5rem;
+}
+
+p {
+  text-align: center;
+}
+
+.hat-logo {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+#cuisine-type {
+  /* stylelint-disable-next-line font-family-name-quotes */
+  font-family: "Overpass", sans-serif;
+}
