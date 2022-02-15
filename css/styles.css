@@ -1,6 +1,24 @@
 body {
   background-color: #df4747;
   color: aliceblue;
+  /* stylelint-disable-next-line font-family-name-quotes */
+  font-family: "Overpass", sans-serif;
+  font-size: 17px;
+  list-style: none;
+}
+
+h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: 60px;
+}
+
+h3 {
+  font-family: "Dancing Script", cursive;
+  font-size: 25px;
+}
+
+p {
+  text-align: center;
 }
 
 .hat-logo {
