@@ -36,6 +36,9 @@ p {
 #cuisine-type {
   /* stylelint-disable-next-line font-family-name-quotes */
   font-family: "Overpass", sans-serif;
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: aliceblue;
 }
 
 .generator {
