@@ -9,6 +9,12 @@ body {
   list-style: none;
 }
 
+.recipe-img {
+  height: 300px;
+  width: 300px;
+  margin-top: 16px;
+}
+
 /* Headers */
 
 h1 {
