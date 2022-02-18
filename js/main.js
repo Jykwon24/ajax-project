@@ -91,7 +91,11 @@ $form.addEventListener('submit', function (event) {
 });
 
 // function renderFavoritesList(entry) {
-
+//   var $containerList = document.createElement('li');
+//   var $faveImgContainer = document.createElement('div');
+//   var $faveTitleContainer = document.createElement('div');
+//   var $faveRecipeImg = document.createElement('img');
+//   var $faveRecipeTitle = document.createElement('h2');
 // }
 
 var $topMenu = document.querySelector('.top-hat-logo');
