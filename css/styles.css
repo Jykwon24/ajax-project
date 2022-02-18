@@ -50,7 +50,7 @@ p {
 
 /* Functionality */
 
-#cuisine-type {
+.cuisine {
   /* stylelint-disable-next-line font-family-name-quotes */
   font-family: "Overpass", sans-serif;
   font-size: 1rem;

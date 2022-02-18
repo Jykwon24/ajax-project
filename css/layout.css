@@ -34,13 +34,13 @@ p {
   margin-top: 0.5rem;
 }
 
-#dropdown {
+.drop-down {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-#cuisine-type {
+.cuisine {
   text-align: center;
 }
 
