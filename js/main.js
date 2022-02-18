@@ -13,28 +13,54 @@ $form.addEventListener('submit', function (event) {
     xhr.open('GET', 'https://api.spoonacular.com/recipes/random?number=1&apiKey=fa0446638689465c808d67ef46d6f6f0&tags=' + $cuisineType.value);
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
-      // var $recipeTitleBox = document.createElement('div');
+      var selectedRecipe = xhr.response.recipes[0];
+      var $recipeRow1 = document.createElement('div');
+      $recipeRow1.setAttribute('class', 'recipe-row-1');
+      var $recipeRow2 = document.createElement('div');
+      $recipeRow2.setAttribute('class', 'recipe-row-2');
+      var $recipeRow3 = document.createElement('div');
+      $recipeRow3.setAttribute('class', 'recipe-row-3');
+
+      var $recipeTitleBox = document.createElement('div');
+      var $recipeDirectionsBox = document.createElement('div');
 
       var $recipeImgBox = document.createElement('div');
       $recipeImgBox.setAttribute('id', 'currentRecipe');
 
-      var $recipeInstBox = document.createElement('div');
+      var $recipeIngredientsBox = document.createElement('div');
       var $recipeIngredientList = document.createElement('ul');
 
-      var $imgContainer = document.createElement('img');
-      $imgContainer.setAttribute('class', 'recipe-img');
-      $imgContainer.setAttribute('src', xhr.response.recipes[0].image);
-      $recipeImgBox.appendChild($imgContainer);
+      var $recipeTitle = document.createElement('h2');
+      $recipeTitle.textContent = xhr.response.recipes[0].title;
+
+      var $recipeImg = document.createElement('img');
+      $recipeImg.setAttribute('class', 'recipe-img');
+      $recipeImg.setAttribute('src', xhr.response.recipes[0].image);
+
+      var $recipeDirections = document.createElement('ul');
+
       for (var i = 0; i < xhr.response.recipes[0].extendedIngredients.length; i++) {
         var ingredients = document.createElement('li');
         ingredients.textContent = xhr.response.recipes[0].extendedIngredients[i].original;
         $recipeIngredientList.appendChild(ingredients);
       }
-      $recipeInstBox.appendChild($recipeIngredientList);
-      $displayContainer.appendChild($recipeImgBox);
-      $displayContainer.appendChild($recipeInstBox);
+      for (i = 0; i < xhr.response.recipes[0].analyzedInstructions[0].steps.length; i++) {
+        var directions = document.createElement('li');
+        directions.textContent = selectedRecipe.analyzedInstructions[0].steps[i].step;
+        $recipeDirections.appendChild(directions);
+      }
+      $recipeTitleBox.appendChild($recipeTitle);
+      $recipeIngredientsBox.appendChild($recipeIngredientList);
+      $recipeImgBox.appendChild($recipeImg);
+      $recipeDirectionsBox.appendChild($recipeDirections);
+      $recipeRow1.appendChild($recipeTitleBox);
+      $recipeRow2.appendChild($recipeImgBox);
+      $recipeRow2.appendChild($recipeIngredientsBox);
+      $recipeRow3.appendChild($recipeDirectionsBox);
+      $displayContainer.appendChild($recipeRow1);
+      $displayContainer.appendChild($recipeRow2);
+      $displayContainer.appendChild($recipeRow3);
     });
     xhr.send();
   }
-
 });
