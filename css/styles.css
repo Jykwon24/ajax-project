@@ -42,7 +42,16 @@ p {
   border-radius: 50%;
 }
 
-.top-hat-logo {
+.check {
+  font-size: 7rem;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  color: aliceblue;
+}
+
+.top-hat-logo,
+.bot-hat-logo {
   height: 100px;
   width: 100px;
   border-radius: 50%;

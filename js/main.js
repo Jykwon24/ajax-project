@@ -6,13 +6,16 @@ var $recipeContainer = document.querySelector('.recipe-container');
 var $displayContainer = document.querySelector('.container');
 var $topBarMenu = document.querySelector('.top-bar');
 var $favoritesButtonDisplay = document.querySelector('.favorites-button');
+var $favoritesButton = document.querySelector('.bot-hat-logo');
 
 $form.addEventListener('submit', function (event) {
+  var favoritesRecipe = {};
   event.preventDefault();
   if ($cuisineType.value !== '') {
     $mainPage.classList.add('hidden');
     data.value = $cuisineType.value;
     var xhr = new XMLHttpRequest();
+    // var xhr2 = new XMLHttpRequest();
     xhr.open('GET', 'https://api.spoonacular.com/recipes/random?number=1&apiKey=fa0446638689465c808d67ef46d6f6f0&tags=' + $cuisineType.value);
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
@@ -52,6 +55,7 @@ $form.addEventListener('submit', function (event) {
         directions.textContent = selectedRecipe.analyzedInstructions[0].steps[i].step;
         $recipeDirections.appendChild(directions);
       }
+
       $recipeTitleBox.appendChild($recipeTitle);
       $recipeIngredientsBox.appendChild($recipeIngredientList);
       $recipeImgBox.appendChild($recipeImg);
@@ -64,13 +68,31 @@ $form.addEventListener('submit', function (event) {
       $recipeContainer.appendChild($recipeRow2);
       $recipeContainer.appendChild($recipeRow3);
       $displayContainer.appendChild($recipeContainer);
+
       $topBarMenu.classList.remove('hidden');
       $favoritesButtonDisplay.classList.remove('hidden');
+      $favoritesButton.addEventListener('click', function (event) {
+        favoritesRecipe.title = selectedRecipe.title;
+        favoritesRecipe.image = selectedRecipe.image;
+        favoritesRecipe.Id = selectedRecipe.id;
+        data.entries.unshift(favoritesRecipe);
+        var $faveWording = document.querySelector('.fave');
+        var $addWording = document.querySelector('.add');
+        var $check = document.querySelector('.fas');
+        $favoritesButton.classList.add('hidden');
+        $faveWording.classList.add('hidden');
+        $addWording.classList.remove('hidden');
+        $check.classList.remove('hidden');
+      });
       $form.reset();
     });
     xhr.send();
   }
 });
+
+// function renderFavoritesList(entry) {
+
+// }
 
 var $topMenu = document.querySelector('.top-hat-logo');
 

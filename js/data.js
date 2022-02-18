@@ -6,7 +6,7 @@ var data = {
   nextRecipeId: 1
 };
 
-var dataModel = localStorage.getItem('data-model');
+var dataModel = localStorage.getItem('data');
 
 if (dataModel != null) {
   data = JSON.parse(dataModel);
@@ -14,5 +14,5 @@ if (dataModel != null) {
 
 window.addEventListener('beforeunload', function (event) {
   var localDataModel = JSON.stringify(data);
-  localStorage.setItem('data-model', localDataModel);
+  localStorage.setItem('data', localDataModel);
 });
