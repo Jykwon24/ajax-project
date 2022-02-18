@@ -18,22 +18,30 @@
 <body>
   <header>
     <div class="heading">
+      <div class="top-logo">
+        <div class="top-bar hidden">
+          <img class="top-hat-logo" src="images/Chef-Hat.jpeg" alt="chefs-hat-logo">
+          <h2 class="wording">Cooking Hat</h2>
+        </div>
+      </div>
       <h3 class="favorites-list">Favorites</h3>
     </div>
   </header>
   <main>
     <div class="container">
+      <div class="recipe-container"></div>
+      <!-- <ul class="recipe-display"></ul> -->
       <div class="body-container">
         <div class="logo">
           <img class="hat-logo" src="images/Chef-Hat.jpeg" alt="chefs-hat-logo">
         </div>
         <div class="wording">
           <h1>Cooking Hat...</h1>
-          <p>Unsure on what to cook? Let us pick!</p>
+          <p>Unsure what to cook? Let us pick!</p>
         </div>
         <div class="form-box">
-          <form id="dropdown">
-            <select name="cuisine" id="cuisine-type">
+          <form class="drop-down" id="dropdown">
+            <select class="cuisine" name="cuisine" id="cuisine-type">
               <option value="">Select cuisine type:</option>
               <option value="american">American</option>
               <option value="chinese">Chinese</option>
@@ -48,12 +56,19 @@
               <option value="thai">Thai</option>
               <option value="vietnamese">Vietnamese</option>
             </select>
+            <div class="submit-button">
+              <input class="generator" type="submit" value="Time to cook!">
+            </div>
           </form>
         </div>
       </div>
     </div>
+    <div class="favorites-button hidden">
+      <img class="top-hat-logo" src="images/Chef-Hat.jpeg" alt="chefs-hat-logo">
+      <h3>Add to favorites</h3>
+    </div>
   </main>
-  <script src="js/data.js"></script>
+  <script src=" js/data.js"></script>
   <script src="js/main.js"></script>
 </body>
 

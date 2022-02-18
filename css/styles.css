@@ -1,3 +1,5 @@
+/* General styling */
+
 body {
   background-color: #df4747;
   color: aliceblue;
@@ -7,9 +9,22 @@ body {
   list-style: none;
 }
 
+.recipe-img {
+  height: 300px;
+  width: 300px;
+  margin-top: 16px;
+}
+
+/* Headers */
+
 h1 {
   font-family: "Dancing Script", cursive;
   font-size: 4rem;
+}
+
+.top-logo {
+  font-family: "Dancing Script", cursive;
+  font-size: 2rem;
 }
 
 h3 {
@@ -27,7 +42,30 @@ p {
   border-radius: 50%;
 }
 
-#cuisine-type {
+.top-hat-logo {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+
+/* Functionality */
+
+.cuisine {
   /* stylelint-disable-next-line font-family-name-quotes */
   font-family: "Overpass", sans-serif;
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: aliceblue;
+}
+
+.generator {
+  color: #df4747;
+  font-family: "Dancing Script", cursive;
+  font-size: 2.5rem;
+  border-radius: 5px;
+  border: none;
+  margin-top: 2rem;
+  height: 50px;
+  width: 250px;
+  background-color: aliceblue;
 }
