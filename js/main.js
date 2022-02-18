@@ -2,7 +2,10 @@ var $form = document.getElementById('dropdown');
 var $cuisineType = document.querySelector('#cuisine-type');
 var $mainPage = document.querySelector('.body-container');
 // var $ul = document.querySelector('.recipe-display');
+var $recipeContainer = document.querySelector('.recipe-container');
 var $displayContainer = document.querySelector('.container');
+var $topBarMenu = document.querySelector('.top-bar');
+var $favoritesButtonDisplay = document.querySelector('.favorites-button');
 
 $form.addEventListener('submit', function (event) {
   event.preventDefault();
@@ -31,20 +34,20 @@ $form.addEventListener('submit', function (event) {
       var $recipeIngredientList = document.createElement('ul');
 
       var $recipeTitle = document.createElement('h2');
-      $recipeTitle.textContent = xhr.response.recipes[0].title;
+      $recipeTitle.textContent = selectedRecipe.title;
 
       var $recipeImg = document.createElement('img');
       $recipeImg.setAttribute('class', 'recipe-img');
-      $recipeImg.setAttribute('src', xhr.response.recipes[0].image);
+      $recipeImg.setAttribute('src', selectedRecipe.image);
 
       var $recipeDirections = document.createElement('ul');
 
-      for (var i = 0; i < xhr.response.recipes[0].extendedIngredients.length; i++) {
+      for (var i = 0; i < selectedRecipe.extendedIngredients.length; i++) {
         var ingredients = document.createElement('li');
-        ingredients.textContent = xhr.response.recipes[0].extendedIngredients[i].original;
+        ingredients.textContent = selectedRecipe.extendedIngredients[i].original;
         $recipeIngredientList.appendChild(ingredients);
       }
-      for (i = 0; i < xhr.response.recipes[0].analyzedInstructions[0].steps.length; i++) {
+      for (i = 0; i < selectedRecipe.analyzedInstructions[0].steps.length; i++) {
         var directions = document.createElement('li');
         directions.textContent = selectedRecipe.analyzedInstructions[0].steps[i].step;
         $recipeDirections.appendChild(directions);
@@ -57,10 +60,20 @@ $form.addEventListener('submit', function (event) {
       $recipeRow2.appendChild($recipeImgBox);
       $recipeRow2.appendChild($recipeIngredientsBox);
       $recipeRow3.appendChild($recipeDirectionsBox);
-      $displayContainer.appendChild($recipeRow1);
-      $displayContainer.appendChild($recipeRow2);
-      $displayContainer.appendChild($recipeRow3);
+      $recipeContainer.appendChild($recipeRow1);
+      $recipeContainer.appendChild($recipeRow2);
+      $recipeContainer.appendChild($recipeRow3);
+      $displayContainer.appendChild($recipeContainer);
+      $topBarMenu.classList.remove('hidden');
+      $favoritesButtonDisplay.classList.remove('hidden');
+      $form.reset();
     });
     xhr.send();
   }
+});
+
+var $topMenu = document.querySelector('.top-hat-logo');
+
+$topMenu.addEventListener('click', function (event) {
+  window.location.reload();
 });
