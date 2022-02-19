@@ -57,6 +57,18 @@ p {
   border-radius: 50%;
 }
 
+.top-hat-logo:hover {
+  cursor: pointer;
+}
+
+.bot-hat-logo {
+  cursor: pointer;
+}
+
+.favorites-list:hover {
+  cursor: pointer;
+}
+
 /* Functionality */
 
 .cuisine {
@@ -77,4 +89,8 @@ p {
   height: 50px;
   width: 250px;
   background-color: aliceblue;
+}
+
+.generator:hover {
+  cursor: pointer;
 }

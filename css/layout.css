@@ -54,6 +54,12 @@ p {
   align-items: center;
 }
 
+.recipe-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
 .favorites-button {
   margin-top: 1rem;
   display: flex;

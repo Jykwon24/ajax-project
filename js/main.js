@@ -99,7 +99,15 @@ $form.addEventListener('submit', function (event) {
 // }
 
 var $topMenu = document.querySelector('.top-hat-logo');
+var $faveListButton = document.querySelector('.favorites-list');
+var $emptyList = document.querySelector('.empty-list');
 
 $topMenu.addEventListener('click', function (event) {
   window.location.reload();
+});
+
+$faveListButton.addEventListener('click', function (event) {
+  $topBarMenu.classList.remove('hidden');
+  $mainPage.classList.add('hidden');
+  $emptyList.classList.remove('hidden');
 });
