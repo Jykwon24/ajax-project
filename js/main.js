@@ -1,7 +1,7 @@
 var $form = document.getElementById('dropdown');
 var $cuisineType = document.querySelector('#cuisine-type');
 var $mainPage = document.querySelector('.body-container');
-// var $ul = document.querySelector('.recipe-display');
+var $ul = document.querySelector('.recipe-display');
 var $recipeContainer = document.querySelector('.recipe-container');
 var $displayContainer = document.querySelector('.container');
 var $topBarMenu = document.querySelector('.top-bar');
@@ -55,7 +55,6 @@ $form.addEventListener('submit', function (event) {
         directions.textContent = selectedRecipe.analyzedInstructions[0].steps[i].step;
         $recipeDirections.appendChild(directions);
       }
-
       $recipeTitleBox.appendChild($recipeTitle);
       $recipeIngredientsBox.appendChild($recipeIngredientList);
       $recipeImgBox.appendChild($recipeImg);
@@ -76,6 +75,7 @@ $form.addEventListener('submit', function (event) {
         favoritesRecipe.image = selectedRecipe.image;
         favoritesRecipe.Id = selectedRecipe.id;
         data.entries.unshift(favoritesRecipe);
+        renderFavoritesList(favoritesRecipe);
         var $faveWording = document.querySelector('.fave');
         var $addWording = document.querySelector('.add');
         var $check = document.querySelector('.fas');
@@ -90,13 +90,21 @@ $form.addEventListener('submit', function (event) {
   }
 });
 
-// function renderFavoritesList(entry) {
-//   var $containerList = document.createElement('li');
-//   var $faveImgContainer = document.createElement('div');
-//   var $faveTitleContainer = document.createElement('div');
-//   var $faveRecipeImg = document.createElement('img');
-//   var $faveRecipeTitle = document.createElement('h2');
-// }
+function renderFavoritesList(entry) {
+  var $containerList = document.createElement('li');
+  var $faveImgContainer = document.createElement('div');
+  $faveImgContainer.setAttribute('class', 'recipe-img');
+  var $faveTitleContainer = document.createElement('div');
+  var $faveRecipeImg = document.createElement('img');
+  var $faveRecipeTitle = document.createElement('h2');
+  $faveRecipeImg.setAttribute('src', entry.image);
+  $faveRecipeTitle.textContent = entry.title;
+  $containerList.appendChild($faveImgContainer);
+  $containerList.appendChild($faveTitleContainer);
+  $faveImgContainer.appendChild($faveRecipeImg);
+  $faveTitleContainer.appendChild($faveRecipeTitle);
+  return $containerList;
+}
 
 var $topMenu = document.querySelector('.top-hat-logo');
 var $faveListButton = document.querySelector('.favorites-list');
@@ -109,5 +117,13 @@ $topMenu.addEventListener('click', function (event) {
 $faveListButton.addEventListener('click', function (event) {
   $topBarMenu.classList.remove('hidden');
   $mainPage.classList.add('hidden');
-  $emptyList.classList.remove('hidden');
+  if (data.entries.length === 0) {
+    $recipeContainer.classList.add('hidden');
+    $emptyList.classList.remove('hidden');
+  } else {
+    for (var i = 0; i < data.entries.length; i++) {
+      var result = renderFavoritesList(data.entries[i]);
+      $ul.appendChild(result);
+    }
+  }
 });
