@@ -73,6 +73,7 @@ $form.addEventListener('submit', function (event) {
         favoritesRecipe.title = selectedRecipe.title;
         favoritesRecipe.image = selectedRecipe.image;
         favoritesRecipe.Id = selectedRecipe.id;
+        favoritesRecipe.entryId = data.nextRecipeId++;
         data.entries.unshift(favoritesRecipe);
         renderFavoritesList(favoritesRecipe);
         var $faveWording = document.querySelector('.fave');
@@ -92,15 +93,18 @@ $form.addEventListener('submit', function (event) {
 function renderFavoritesList(entry) {
   var $containerList = document.createElement('li');
   $containerList.setAttribute('class', 'recipe-row-1');
-  var $faveImgContainer = document.createElement('div');
+  $containerList.setAttribute('id', entry.entryId);
+  $containerList.setAttribute('data-entry-id', entry.entryId);
   var $faveRecipeImg = document.createElement('img');
   $faveRecipeImg.setAttribute('class', 'recipe-img');
+  $faveRecipeImg.setAttribute('data-entry-id', entry.entryId);
   var $faveRecipeTitle = document.createElement('h2');
+  $faveRecipeTitle.setAttribute('class', 'favorites-list-title');
+  $faveRecipeTitle.setAttribute('data-entry-id', entry.entryId);
   $faveRecipeImg.setAttribute('src', entry.image);
   $faveRecipeTitle.textContent = entry.title;
-  $containerList.appendChild($faveImgContainer);
-  $faveImgContainer.appendChild($faveRecipeTitle);
-  $faveImgContainer.appendChild($faveRecipeImg);
+  $containerList.appendChild($faveRecipeImg);
+  $containerList.appendChild($faveRecipeTitle);
   return $containerList;
 }
 
@@ -115,11 +119,20 @@ $topMenu.addEventListener('click', function (event) {
 $faveListButton.addEventListener('click', function (event) {
   $topBarMenu.classList.remove('hidden');
   $mainPage.classList.add('hidden');
+  var $faveWording = document.querySelector('.fave');
   if (data.entries.length === 0) {
     $recipeContainer.classList.add('hidden');
     $emptyList.classList.remove('hidden');
+    $favoritesButton.classList.add('hidden');
+    $faveWording.classList.add('hidden');
   } else {
     var $showFaveList = document.querySelector('.listing');
+    var $addWording = document.querySelector('.add');
+    var $check = document.querySelector('.fas');
+    $addWording.classList.add('hidden');
+    $check.classList.add('hidden');
+    $favoritesButton.classList.add('hidden');
+    $faveWording.classList.add('hidden');
     $showFaveList.classList.remove('hidden');
     $faveListButton.classList.add('hidden');
     $recipeContainer.classList.add('hidden');
@@ -129,3 +142,65 @@ $faveListButton.addEventListener('click', function (event) {
     }
   }
 });
+
+// $ul.addEventListener('click', function (event) {
+//   console.log(event.target);
+//   // for (var i = 0; i < data.entries.length; i++) {
+//   //   var targetRecipe = data.entries[i].entryId;
+//   //   if (event.target === targetRecipe) {
+
+//   //   }
+//   // }
+
+// });
+
+// function renderRecipe() {
+//   var $recipeRow1 = document.createElement('div');
+//   $recipeRow1.setAttribute('class', 'recipe-row-1');
+//   var $recipeRow2 = document.createElement('div');
+//   $recipeRow2.setAttribute('class', 'recipe-row-2');
+//   var $recipeRow3 = document.createElement('div');
+//   $recipeRow3.setAttribute('class', 'recipe-row-3');
+
+//   var $recipeTitleBox = document.createElement('div');
+//   var $recipeDirectionsBox = document.createElement('div');
+
+//   var $recipeImgBox = document.createElement('div');
+//   $recipeImgBox.setAttribute('id', 'currentRecipe');
+
+//   var $recipeIngredientsBox = document.createElement('div');
+//   var $recipeIngredientList = document.createElement('ul');
+
+//   var $recipeTitle = document.createElement('h2');
+//   $recipeTitle.textContent = selectedRecipe.title;
+
+//   var $recipeImg = document.createElement('img');
+//   $recipeImg.setAttribute('class', 'recipe-img');
+//   $recipeImg.setAttribute('src', selectedRecipe.image);
+
+//   var $recipeDirections = document.createElement('ul');
+
+//   for (var i = 0; i < selectedRecipe.extendedIngredients.length; i++) {
+//     var ingredients = document.createElement('li');
+//     ingredients.textContent = selectedRecipe.extendedIngredients[i].original;
+//     $recipeIngredientList.appendChild(ingredients);
+//   }
+//   for (i = 0; i < selectedRecipe.analyzedInstructions[0].steps.length; i++) {
+//     var directions = document.createElement('li');
+//     directions.textContent = selectedRecipe.analyzedInstructions[0].steps[i].step;
+//     $recipeDirections.appendChild(directions);
+//   }
+//   $recipeTitleBox.appendChild($recipeTitle);
+//   $recipeIngredientsBox.appendChild($recipeIngredientList);
+//   $recipeImgBox.appendChild($recipeImg);
+//   $recipeDirectionsBox.appendChild($recipeDirections);
+//   $recipeRow1.appendChild($recipeTitleBox);
+//   $recipeRow2.appendChild($recipeImgBox);
+//   $recipeRow2.appendChild($recipeIngredientsBox);
+//   $recipeRow3.appendChild($recipeDirectionsBox);
+//   $recipeContainer.appendChild($recipeRow1);
+//   $recipeContainer.appendChild($recipeRow2);
+//   $recipeContainer.appendChild($recipeRow3);
+//   $displayContainer.appendChild($recipeContainer);
+//   return $displayContainer;
+// }
