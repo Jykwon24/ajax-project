@@ -23,6 +23,9 @@
 .recipe-row-3 {
   display: flex;
   justify-content: center;
+  flex-basis: calc(100% / 2);
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
 h1 {
@@ -48,10 +51,29 @@ p {
   margin-right: 2rem;
 }
 
+.empty-list {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.listing {
+  text-align: center;
+}
+
 .body-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.recipe-container {
+  margin-top: 2rem;
+}
+
+.favorites-list-title {
+  margin-left: 2rem;
+  min-width: 250px;
+  max-width: 250px;
 }
 
 .favorites-button {
