@@ -15,7 +15,6 @@ $form.addEventListener('submit', function (event) {
     $mainPage.classList.add('hidden');
     data.value = $cuisineType.value;
     var xhr = new XMLHttpRequest();
-    // var xhr2 = new XMLHttpRequest();
     xhr.open('GET', 'https://api.spoonacular.com/recipes/random?number=1&apiKey=fa0446638689465c808d67ef46d6f6f0&tags=' + $cuisineType.value);
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
@@ -92,17 +91,16 @@ $form.addEventListener('submit', function (event) {
 
 function renderFavoritesList(entry) {
   var $containerList = document.createElement('li');
+  $containerList.setAttribute('class', 'recipe-row-1');
   var $faveImgContainer = document.createElement('div');
-  $faveImgContainer.setAttribute('class', 'recipe-img');
-  var $faveTitleContainer = document.createElement('div');
   var $faveRecipeImg = document.createElement('img');
+  $faveRecipeImg.setAttribute('class', 'recipe-img');
   var $faveRecipeTitle = document.createElement('h2');
   $faveRecipeImg.setAttribute('src', entry.image);
   $faveRecipeTitle.textContent = entry.title;
   $containerList.appendChild($faveImgContainer);
-  $containerList.appendChild($faveTitleContainer);
+  $faveImgContainer.appendChild($faveRecipeTitle);
   $faveImgContainer.appendChild($faveRecipeImg);
-  $faveTitleContainer.appendChild($faveRecipeTitle);
   return $containerList;
 }
 
@@ -121,6 +119,10 @@ $faveListButton.addEventListener('click', function (event) {
     $recipeContainer.classList.add('hidden');
     $emptyList.classList.remove('hidden');
   } else {
+    var $showFaveList = document.querySelector('.listing');
+    $showFaveList.classList.remove('hidden');
+    $faveListButton.classList.add('hidden');
+    $recipeContainer.classList.add('hidden');
     for (var i = 0; i < data.entries.length; i++) {
       var result = renderFavoritesList(data.entries[i]);
       $ul.appendChild(result);

@@ -13,6 +13,9 @@ body {
   height: 300px;
   width: 300px;
   margin-top: 16px;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: aliceblue;
 }
 
 /* Headers */
