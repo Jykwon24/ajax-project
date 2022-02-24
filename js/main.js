@@ -102,9 +102,13 @@ function renderFavoritesList(entry) {
   $faveRecipeTitle.setAttribute('class', 'favorites-list-title');
   $faveRecipeTitle.setAttribute('data-entry-id', entry.entryId);
   $faveRecipeImg.setAttribute('src', entry.image);
+  var $editIcon = document.createElement('a');
+  $editIcon.setAttribute('class', 'fas fa-pen edit-button');
+  $editIcon.setAttribute('data-entry-id', entry.entryId);
   $faveRecipeTitle.textContent = entry.title;
   $containerList.appendChild($faveRecipeImg);
   $containerList.appendChild($faveRecipeTitle);
+  $containerList.appendChild($editIcon);
   return $containerList;
 }
 

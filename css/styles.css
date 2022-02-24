@@ -97,3 +97,14 @@ p {
 .generator:hover {
   cursor: pointer;
 }
+
+.modal-title {
+  color: #df4747;
+  font-family: "Dancing Script", cursive;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.modal-content {
+  background-color: aliceblue;
+}
