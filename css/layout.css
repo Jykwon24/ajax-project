@@ -93,3 +93,9 @@ p {
   left: 0;
   bottom: 0;
 }
+
+.delete-button-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 1rem;
+}
