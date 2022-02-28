@@ -47,6 +47,7 @@ $form.addEventListener('submit', function (event) {
       for (var i = 0; i < selectedRecipe.extendedIngredients.length; i++) {
         var ingredients = document.createElement('li');
         ingredients.textContent = selectedRecipe.extendedIngredients[i].original;
+        favoritesRecipe.ingredients = selectedRecipe.extendedIngredients[i].original;
         $recipeIngredientList.appendChild(ingredients);
       }
       for (i = 0; i < selectedRecipe.analyzedInstructions[0].steps.length; i++) {
@@ -54,6 +55,8 @@ $form.addEventListener('submit', function (event) {
         directions.textContent = selectedRecipe.analyzedInstructions[0].steps[i].step;
         $recipeDirections.appendChild(directions);
       }
+      favoritesRecipe.steps = selectedRecipe.analyzedInstructions[0].steps;
+      favoritesRecipe.ingredients = selectedRecipe.extendedIngredients;
       $recipeTitleBox.appendChild($recipeTitle);
       $recipeIngredientsBox.appendChild($recipeIngredientList);
       $recipeImgBox.appendChild($recipeImg);
@@ -147,64 +150,69 @@ $faveListButton.addEventListener('click', function (event) {
   }
 });
 
-// $ul.addEventListener('click', function (event) {
-//   console.log(event.target);
-//   // for (var i = 0; i < data.entries.length; i++) {
-//   //   var targetRecipe = data.entries[i].entryId;
-//   //   if (event.target === targetRecipe) {
+$ul.addEventListener('click', function (event) {
+  var $entryIdOnClick = parseInt(event.target.getAttribute('data-entry-id'));
+  for (var i = 0; i < data.entries.length; i++) {
+    var targetRecipe = data.entries[i].entryId;
+    if ($entryIdOnClick === targetRecipe) {
+      var favoritesTitle = document.querySelector('.listing');
+      $ul.classList.add('hidden');
+      $recipeContainer.classList.remove('hidden');
+      favoritesTitle.classList.add('hidden');
+      $faveListButton.classList.remove('hidden');
+      renderFavoritedRecipe(data.entries[i]);
+    }
+  }
 
-//   //   }
-//   // }
+});
 
-// });
+function renderFavoritedRecipe(entry) {
+  var $recipeRow1 = document.createElement('div');
+  $recipeRow1.setAttribute('class', 'recipe-row-1');
+  var $recipeRow2 = document.createElement('div');
+  $recipeRow2.setAttribute('class', 'recipe-row-2');
+  var $recipeRow3 = document.createElement('div');
+  $recipeRow3.setAttribute('class', 'recipe-row-3');
 
-// function renderRecipe() {
-//   var $recipeRow1 = document.createElement('div');
-//   $recipeRow1.setAttribute('class', 'recipe-row-1');
-//   var $recipeRow2 = document.createElement('div');
-//   $recipeRow2.setAttribute('class', 'recipe-row-2');
-//   var $recipeRow3 = document.createElement('div');
-//   $recipeRow3.setAttribute('class', 'recipe-row-3');
+  var $recipeTitleBox = document.createElement('div');
+  var $recipeDirectionsBox = document.createElement('div');
 
-//   var $recipeTitleBox = document.createElement('div');
-//   var $recipeDirectionsBox = document.createElement('div');
+  var $recipeImgBox = document.createElement('div');
+  $recipeImgBox.setAttribute('id', 'currentRecipe');
 
-//   var $recipeImgBox = document.createElement('div');
-//   $recipeImgBox.setAttribute('id', 'currentRecipe');
+  var $recipeIngredientsBox = document.createElement('div');
+  var $recipeIngredientList = document.createElement('ul');
 
-//   var $recipeIngredientsBox = document.createElement('div');
-//   var $recipeIngredientList = document.createElement('ul');
+  var $recipeTitle = document.createElement('h2');
+  $recipeTitle.textContent = entry.title;
 
-//   var $recipeTitle = document.createElement('h2');
-//   $recipeTitle.textContent = selectedRecipe.title;
+  var $recipeImg = document.createElement('img');
+  $recipeImg.setAttribute('class', 'recipe-img');
+  $recipeImg.setAttribute('src', entry.image);
 
-//   var $recipeImg = document.createElement('img');
-//   $recipeImg.setAttribute('class', 'recipe-img');
-//   $recipeImg.setAttribute('src', selectedRecipe.image);
+  var $recipeDirections = document.createElement('ul');
 
-//   var $recipeDirections = document.createElement('ul');
-
-//   for (var i = 0; i < selectedRecipe.extendedIngredients.length; i++) {
-//     var ingredients = document.createElement('li');
-//     ingredients.textContent = selectedRecipe.extendedIngredients[i].original;
-//     $recipeIngredientList.appendChild(ingredients);
-//   }
-//   for (i = 0; i < selectedRecipe.analyzedInstructions[0].steps.length; i++) {
-//     var directions = document.createElement('li');
-//     directions.textContent = selectedRecipe.analyzedInstructions[0].steps[i].step;
-//     $recipeDirections.appendChild(directions);
-//   }
-//   $recipeTitleBox.appendChild($recipeTitle);
-//   $recipeIngredientsBox.appendChild($recipeIngredientList);
-//   $recipeImgBox.appendChild($recipeImg);
-//   $recipeDirectionsBox.appendChild($recipeDirections);
-//   $recipeRow1.appendChild($recipeTitleBox);
-//   $recipeRow2.appendChild($recipeImgBox);
-//   $recipeRow2.appendChild($recipeIngredientsBox);
-//   $recipeRow3.appendChild($recipeDirectionsBox);
-//   $recipeContainer.appendChild($recipeRow1);
-//   $recipeContainer.appendChild($recipeRow2);
-//   $recipeContainer.appendChild($recipeRow3);
-//   $displayContainer.appendChild($recipeContainer);
-//   return $displayContainer;
-// }
+  for (var i = 0; i < entry.ingredients.length; i++) {
+    var ingredients = document.createElement('li');
+    ingredients.textContent = entry.ingredients[i].original;
+    $recipeIngredientList.appendChild(ingredients);
+  }
+  for (i = 0; i < entry.steps.length; i++) {
+    var directions = document.createElement('li');
+    directions.textContent = entry.steps[i].step;
+    $recipeDirections.appendChild(directions);
+  }
+  $recipeTitleBox.appendChild($recipeTitle);
+  $recipeIngredientsBox.appendChild($recipeIngredientList);
+  $recipeImgBox.appendChild($recipeImg);
+  $recipeDirectionsBox.appendChild($recipeDirections);
+  $recipeRow1.appendChild($recipeTitleBox);
+  $recipeRow2.appendChild($recipeImgBox);
+  $recipeRow2.appendChild($recipeIngredientsBox);
+  $recipeRow3.appendChild($recipeDirectionsBox);
+  $recipeContainer.appendChild($recipeRow1);
+  $recipeContainer.appendChild($recipeRow2);
+  $recipeContainer.appendChild($recipeRow3);
+  $displayContainer.appendChild($recipeContainer);
+  return $displayContainer;
+}
