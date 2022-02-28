@@ -83,6 +83,11 @@ p {
   flex-direction: column;
 }
 
+.back-to-favorites {
+  display: flex;
+  justify-content: center;
+}
+
 .modal-container {
   position: absolute;
   display: flex;

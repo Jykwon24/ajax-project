@@ -124,6 +124,7 @@ $topMenu.addEventListener('click', function (event) {
 });
 
 $faveListButton.addEventListener('click', function (event) {
+  $ul.classList.remove('hidden');
   $topBarMenu.classList.remove('hidden');
   $mainPage.classList.add('hidden');
   var $faveWording = document.querySelector('.fave');
@@ -152,18 +153,19 @@ $faveListButton.addEventListener('click', function (event) {
 
 $ul.addEventListener('click', function (event) {
   var $entryIdOnClick = parseInt(event.target.getAttribute('data-entry-id'));
+  var $deleter = document.querySelector('.edit-button');
+  var $backToFaves = document.querySelector('.back-to-favorites');
   for (var i = 0; i < data.entries.length; i++) {
     var targetRecipe = data.entries[i].entryId;
-    if ($entryIdOnClick === targetRecipe) {
+    if ($entryIdOnClick === targetRecipe && event.target !== $deleter) {
       var favoritesTitle = document.querySelector('.listing');
       $ul.classList.add('hidden');
       $recipeContainer.classList.remove('hidden');
       favoritesTitle.classList.add('hidden');
-      $faveListButton.classList.remove('hidden');
       renderFavoritedRecipe(data.entries[i]);
+      $backToFaves.classList.remove('hidden');
     }
   }
-
 });
 
 function renderFavoritedRecipe(entry) {
