@@ -3,7 +3,8 @@ var data = {
   value: null,
   entries: [],
   editing: null,
-  nextRecipeId: 1
+  nextRecipeId: 1,
+  view: 'main'
 };
 
 var dataModel = localStorage.getItem('data');

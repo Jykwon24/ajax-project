@@ -30,13 +30,22 @@ function renderFavoritesList(entry) {
   return $containerList;
 }
 
+var $recipeForm = document.createElement('form');
+
 function renderFavoritedRecipe(entry) {
   var $recipeRow1 = document.createElement('div');
   $recipeRow1.setAttribute('class', 'recipe-row-1');
+
   var $recipeRow2 = document.createElement('div');
   $recipeRow2.setAttribute('class', 'recipe-row-2');
   var $recipeRow3 = document.createElement('div');
   $recipeRow3.setAttribute('class', 'recipe-row-3');
+  var $recipeRow4 = document.createElement('div');
+  $recipeRow4.setAttribute('class', 'favorites-button');
+  var $faveListButton = document.createElement('input');
+  $faveListButton.setAttribute('class', 'generator-2');
+  $faveListButton.setAttribute('type', 'submit');
+  $faveListButton.setAttribute('value', 'Add to favorites');
 
   var $recipeTitleBox = document.createElement('div');
   var $recipeDirectionsBox = document.createElement('div');
@@ -74,9 +83,12 @@ function renderFavoritedRecipe(entry) {
   $recipeRow2.appendChild($recipeImgBox);
   $recipeRow2.appendChild($recipeIngredientsBox);
   $recipeRow3.appendChild($recipeDirectionsBox);
-  $recipeContainer.appendChild($recipeRow1);
-  $recipeContainer.appendChild($recipeRow2);
-  $recipeContainer.appendChild($recipeRow3);
+  $recipeRow4.appendChild($faveListButton);
+  $recipeForm.appendChild($recipeRow1);
+  $recipeForm.appendChild($recipeRow2);
+  $recipeForm.appendChild($recipeRow3);
+  $recipeForm.appendChild($recipeRow4);
+  $recipeContainer.appendChild($recipeForm);
   $displayContainer.appendChild($recipeContainer);
   return $displayContainer;
 }
@@ -104,51 +116,10 @@ $form.addEventListener('submit', function (event) {
       favoritesRecipe.image = selectedRecipe.image;
       favoritesRecipe.Id = selectedRecipe.id;
       renderFavoritedRecipe(favoritesRecipe);
-
-      // var $recipeRow1 = document.createElement('div');
-      // $recipeRow1.setAttribute('class', 'recipe-row-1');
-      // var $recipeRow2 = document.createElement('div');
-      // $recipeRow2.setAttribute('class', 'recipe-row-2');
-      // var $recipeRow3 = document.createElement('div');
-      // $recipeRow3.setAttribute('class', 'recipe-row-3');
-
-      // var $recipeTitleBox = document.createElement('div');
-      // var $recipeDirectionsBox = document.createElement('div');
-
-      // var $recipeImgBox = document.createElement('div');
-      // $recipeImgBox.setAttribute('id', 'currentRecipe');
-
-      // var $recipeIngredientsBox = document.createElement('div');
-      // var $recipeIngredientList = document.createElement('ul');
-
-      // var $recipeTitle = document.createElement('h2');
-      // $recipeTitle.textContent = selectedRecipe.title;
-
-      // var $recipeImg = document.createElement('img');
-      // $recipeImg.setAttribute('class', 'recipe-img');
-      // $recipeImg.setAttribute('src', selectedRecipe.image);
-
-      // var $recipeDirections = document.createElement('ul');
-
-      // $recipeTitleBox.appendChild($recipeTitle);
-      // $recipeIngredientsBox.appendChild($recipeIngredientList);
-      // $recipeImgBox.appendChild($recipeImg);
-      // $recipeDirectionsBox.appendChild($recipeDirections);
-      // $recipeRow1.appendChild($recipeTitleBox);
-      // $recipeRow2.appendChild($recipeImgBox);
-      // $recipeRow2.appendChild($recipeIngredientsBox);
-      // $recipeRow3.appendChild($recipeDirectionsBox);
-      // $recipeContainer.appendChild($recipeRow1);
-      // $recipeContainer.appendChild($recipeRow2);
-      // $recipeContainer.appendChild($recipeRow3);
-      // $displayContainer.appendChild($recipeContainer);
-
+      data.view = 'recipe-view';
       $topBarMenu.classList.remove('hidden');
       $favoritesButtonDisplay.classList.remove('hidden');
       $favoritesButton.addEventListener('click', function (event) {
-        // favoritesRecipe.title = selectedRecipe.title;
-        // favoritesRecipe.image = selectedRecipe.image;
-        // favoritesRecipe.Id = selectedRecipe.id;
         favoritesRecipe.entryId = data.nextRecipeId++;
         data.entries.unshift(favoritesRecipe);
         // renderFavoritesList(favoritesRecipe);
@@ -171,6 +142,7 @@ var $faveListButton = document.querySelector('.favorites-list');
 var $emptyList = document.querySelector('.empty-list');
 
 $topMenu.addEventListener('click', function (event) {
+  data.view = 'main';
   window.location.reload();
 });
 
@@ -178,21 +150,22 @@ $faveListButton.addEventListener('click', function (event) {
   $ul.classList.remove('hidden');
   $topBarMenu.classList.remove('hidden');
   $mainPage.classList.add('hidden');
-  $recipeContainer.remove();
   var $faveWording = document.querySelector('.fave');
   if (data.entries.length === 0) {
+    data.view = 'fave-list';
     $recipeContainer.classList.add('hidden');
     $emptyList.classList.remove('hidden');
     $favoritesButton.classList.add('hidden');
     $faveWording.classList.add('hidden');
   } else {
     var $showFaveList = document.querySelector('.listing');
-    var $addWording = document.querySelector('.add');
-    var $check = document.querySelector('.fas');
-    $addWording.classList.add('hidden');
-    $check.classList.add('hidden');
-    $favoritesButton.classList.add('hidden');
-    $faveWording.classList.add('hidden');
+    // var $addWording = document.querySelector('.add');
+    // var $check = document.querySelector('.fas');
+    data.view = 'fave-list';
+    // $addWording.classList.add('hidden');
+    // $check.classList.add('hidden');
+    // $favoritesButton.classList.add('hidden');
+    // $faveWording.classList.add('hidden');
     $showFaveList.classList.remove('hidden');
     $faveListButton.classList.add('hidden');
     $recipeContainer.classList.add('hidden');
@@ -216,6 +189,15 @@ $ul.addEventListener('click', function (event) {
       favoritesTitle.classList.add('hidden');
       renderFavoritedRecipe(data.entries[i]);
       $backToFaves.classList.remove('hidden');
+      data.view = 'recipe-view';
     }
   }
 });
+
+// document.addEventListener('DOMContentLoaded', function (event) {
+//   for (let i = 0; i < data.entries.length; i++) {
+//     const result = renderFavoritesList(data.entries[i]);
+//     $ul.appendChild(result);
+//   }
+//   if (data.view === )
+// });

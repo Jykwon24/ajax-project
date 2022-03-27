@@ -94,7 +94,23 @@ p {
   background-color: aliceblue;
 }
 
+.generator-2 {
+  color: #df4747;
+  font-family: "Dancing Script", cursive;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  border: none;
+  margin-top: 2rem;
+  height: 40px;
+  width: 150px;
+  background-color: aliceblue;
+}
+
 .generator:hover {
+  cursor: pointer;
+}
+
+.generator-2:hover {
   cursor: pointer;
 }
 
