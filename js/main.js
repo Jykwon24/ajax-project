@@ -6,14 +6,14 @@ var $recipeContainer = document.querySelector('.recipe-container');
 var $displayContainer = document.querySelector('.container');
 var $topBarMenu = document.querySelector('.top-bar');
 var $favoritesButtonDisplay = document.querySelector('.favorites-button');
-// var $favoritesButton = document.querySelector('.bot-hat-logo');
+var $favoritesLogo = document.querySelector('.bot-hat-logo');
 var $recipeDisplay = document.createElement('div');
-
 var $topMenu = document.querySelector('.top-hat-logo');
 var $faveListButton = document.querySelector('.favorites-list');
 var $emptyList = document.querySelector('.empty-list');
 var $listingTitle = document.querySelector('.listing');
 var $faveWording = document.querySelector('.fave');
+var $backToFavesList = document.querySelector('.back-button');
 
 function renderFavoritesList(entry) {
   var $containerList = document.createElement('li');
@@ -27,13 +27,9 @@ function renderFavoritesList(entry) {
   $faveRecipeTitle.setAttribute('class', 'favorites-list-title');
   $faveRecipeTitle.setAttribute('data-entry-id', entry.entryId);
   $faveRecipeImg.setAttribute('src', entry.image);
-  var $editIcon = document.createElement('a');
-  $editIcon.setAttribute('class', 'fas fa-pen edit-button');
-  $editIcon.setAttribute('data-entry-id', entry.entryId);
   $faveRecipeTitle.textContent = entry.title;
   $containerList.appendChild($faveRecipeImg);
   $containerList.appendChild($faveRecipeTitle);
-  $containerList.appendChild($editIcon);
   return $containerList;
 }
 
@@ -125,11 +121,11 @@ $form.addEventListener('submit', function (event) {
         var $faveWording = document.querySelector('.fave');
         var $addWording = document.querySelector('.add');
         var $check = document.querySelector('.fas');
+        $favoritesLogo.classList.add('hidden');
         $faveWording.classList.add('hidden');
         $addWording.classList.remove('hidden');
         $check.classList.remove('hidden');
       });
-      $form.reset();
     });
     xhr.send();
   }
@@ -169,10 +165,19 @@ $faveListButton.addEventListener('click', function (event) {
   window.location.reload();
 });
 
+$backToFavesList.addEventListener('click', function (event) {
+  data.view = 'fave-list';
+  window.location.reload();
+});
+
+var $deleteButton = document.querySelector('.delete');
+var $backToFaves = document.querySelector('.back-to-favorites');
+
 $ul.addEventListener('click', function (event) {
   var $entryIdOnClick = parseInt(event.target.getAttribute('data-entry-id'));
   var $deleter = document.querySelector('.edit-button');
-  var $backToFaves = document.querySelector('.back-to-favorites');
+  $backToFavesList.textContent = 'Back to favorites';
+  $deleteButton.textContent = 'Delete';
   for (var i = 0; i < data.entries.length; i++) {
     var targetRecipe = data.entries[i].entryId;
     if ($entryIdOnClick === targetRecipe && event.target !== $deleter) {
@@ -183,8 +188,35 @@ $ul.addEventListener('click', function (event) {
       favoritesTitle.classList.add('hidden');
       $backToFaves.classList.remove('hidden');
       data.view = 'recipe-view';
+      data.editing = $entryIdOnClick;
     }
   }
+});
+
+var $modalContainer = document.querySelector('.delete-modal-container');
+var $confirmDelete = document.querySelector('.confirm');
+var $cancelDelete = document.querySelector('.cancel');
+
+$deleteButton.addEventListener('click', function (event) {
+  $modalContainer.classList.remove('hidden');
+});
+
+$confirmDelete.addEventListener('click', function (event) {
+  for (var i = 0; i < data.entries.length; i++) {
+    var targetRecipe = data.entries[i].entryId;
+    if (data.editing === targetRecipe) {
+      data.entries.splice([i], 1);
+    }
+  }
+  $modalContainer.classList.add('hidden');
+  $recipeContainer.remove();
+  $mainPage.classList.remove('hidden');
+  $topBarMenu.classList.add('hidden');
+  $backToFaves.classList.add('hidden');
+});
+
+$cancelDelete.addEventListener('click', function (event) {
+  $modalContainer.classList.add('hidden');
 });
 
 document.addEventListener('DOMContentLoaded', function (event) {
