@@ -4,7 +4,7 @@ var data = {
   entries: [],
   editing: null,
   nextRecipeId: 1,
-  view: 'main'
+  currentView: 'main-page'
 };
 
 var dataModel = localStorage.getItem('data');

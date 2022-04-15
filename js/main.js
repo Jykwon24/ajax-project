@@ -1,19 +1,31 @@
-var $form = document.getElementById('dropdown');
+/*
+DOM NODES
+*/
+// var $dataView = document.querySelectorAll('[data-view]');
+var $recipeGenerator = document.querySelector('.recipe-generator');
 var $cuisineType = document.querySelector('#cuisine-type');
 var $mainPage = document.querySelector('.body-container');
-var $ul = document.querySelector('.recipe-display');
+var $favoriteRecipes = document.querySelector('.recipe-display');
 var $recipeContainer = document.querySelector('.recipe-container');
 var $displayContainer = document.querySelector('.container');
 var $topBarMenu = document.querySelector('.top-bar');
 var $favoritesButtonDisplay = document.querySelector('.favorites-button');
 var $favoritesLogo = document.querySelector('.bot-hat-logo');
-var $recipeDisplay = document.createElement('div');
 var $topMenu = document.querySelector('.top-hat-logo');
 var $faveListButton = document.querySelector('.favorites-list');
 var $emptyList = document.querySelector('.empty-list');
 var $listingTitle = document.querySelector('.listing');
 var $faveWording = document.querySelector('.fave');
 var $backToFavesList = document.querySelector('.back-button');
+var $deleteButton = document.querySelector('.delete');
+var $backToFaves = document.querySelector('.back-to-favorites');
+var $modalContainer = document.querySelector('.delete-modal-container');
+var $confirmDelete = document.querySelector('.confirm');
+var $cancelDelete = document.querySelector('.cancel');
+
+/*
+RENDER FUNCTIONS
+*/
 
 function renderFavoritesList(entry) {
   var $containerList = document.createElement('li');
@@ -57,6 +69,7 @@ function renderSelectedRecipe(entry) {
   var $recipeImg = document.createElement('img');
   $recipeImg.setAttribute('class', 'recipe-img');
   $recipeImg.setAttribute('src', entry.image);
+  var $recipeDisplay = document.createElement('div');
 
   var $recipeDirections = document.createElement('ul');
 
@@ -88,48 +101,13 @@ function renderSelectedRecipe(entry) {
   return $displayContainer;
 }
 
-$form.addEventListener('submit', function (event) {
-  var favoritesRecipe = {};
-  event.preventDefault();
-  if ($cuisineType.value !== '') {
-    $mainPage.classList.add('hidden');
-    data.value = $cuisineType.value;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://api.spoonacular.com/recipes/random?number=1&apiKey=fa0446638689465c808d67ef46d6f6f0&tags=' + $cuisineType.value);
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', function () {
-      var selectedRecipe = xhr.response.recipes[0];
-      for (var i = 0; i < selectedRecipe.extendedIngredients.length; i++) {
-        favoritesRecipe.ingredients = selectedRecipe.extendedIngredients[i].original;
-      }
-      for (i = 0; i < selectedRecipe.analyzedInstructions[0].steps.length; i++) {
-        favoritesRecipe.steps = selectedRecipe.analyzedInstructions[0].steps[i].step;
-      }
-      favoritesRecipe.ingredients = selectedRecipe.extendedIngredients;
-      favoritesRecipe.steps = selectedRecipe.analyzedInstructions[0].steps;
-      favoritesRecipe.title = selectedRecipe.title;
-      favoritesRecipe.image = selectedRecipe.image;
-      favoritesRecipe.Id = selectedRecipe.id;
-      renderSelectedRecipe(favoritesRecipe);
-      data.view = 'recipe-view';
-      $topBarMenu.classList.remove('hidden');
-      $favoritesButtonDisplay.classList.remove('hidden');
-      $favoritesButtonDisplay.addEventListener('click', function (event) {
-        favoritesRecipe.entryId = data.nextRecipeId++;
-        data.entries.unshift(favoritesRecipe);
-        // renderFavoritesList(favoritesRecipe);
-        var $faveWording = document.querySelector('.fave');
-        var $addWording = document.querySelector('.add');
-        var $check = document.querySelector('.fas');
-        $favoritesLogo.classList.add('hidden');
-        $faveWording.classList.add('hidden');
-        $addWording.classList.remove('hidden');
-        $check.classList.remove('hidden');
-      });
-    });
-    xhr.send();
-  }
-});
+/*
+EVENT HANDLERS
+*/
+
+$recipeGenerator.addEventListener('submit', handleSpoonacularAPI);
+
+$favoriteRecipes.addEventListener('click', handleSelectedRecipeView);
 
 $topMenu.addEventListener('click', function (event) {
   data.view = 'main';
@@ -170,50 +148,11 @@ $backToFavesList.addEventListener('click', function (event) {
   window.location.reload();
 });
 
-var $deleteButton = document.querySelector('.delete');
-var $backToFaves = document.querySelector('.back-to-favorites');
-
-$ul.addEventListener('click', function (event) {
-  var $entryIdOnClick = parseInt(event.target.getAttribute('data-entry-id'));
-  var $deleter = document.querySelector('.edit-button');
-  $backToFavesList.textContent = 'Back to favorites';
-  $deleteButton.textContent = 'Delete';
-  for (var i = 0; i < data.entries.length; i++) {
-    var targetRecipe = data.entries[i].entryId;
-    if ($entryIdOnClick === targetRecipe && event.target !== $deleter) {
-      var favoritesTitle = document.querySelector('.listing');
-      $ul.classList.add('hidden');
-      $recipeContainer.classList.remove('hidden');
-      renderSelectedRecipe(data.entries[i]);
-      favoritesTitle.classList.add('hidden');
-      $backToFaves.classList.remove('hidden');
-      data.view = 'recipe-view';
-      data.editing = $entryIdOnClick;
-    }
-  }
-});
-
-var $modalContainer = document.querySelector('.delete-modal-container');
-var $confirmDelete = document.querySelector('.confirm');
-var $cancelDelete = document.querySelector('.cancel');
-
 $deleteButton.addEventListener('click', function (event) {
   $modalContainer.classList.remove('hidden');
 });
 
-$confirmDelete.addEventListener('click', function (event) {
-  for (var i = 0; i < data.entries.length; i++) {
-    var targetRecipe = data.entries[i].entryId;
-    if (data.editing === targetRecipe) {
-      data.entries.splice([i], 1);
-    }
-  }
-  $modalContainer.classList.add('hidden');
-  $recipeContainer.remove();
-  $mainPage.classList.remove('hidden');
-  $topBarMenu.classList.add('hidden');
-  $backToFaves.classList.add('hidden');
-});
+$confirmDelete.addEventListener('click', handleModalScreen);
 
 $cancelDelete.addEventListener('click', function (event) {
   $modalContainer.classList.add('hidden');
@@ -231,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     } else {
       for (let i = 0; i < data.entries.length; i++) {
         const result = renderFavoritesList(data.entries[i]);
-        $ul.appendChild(result);
+        $favoriteRecipes.appendChild(result);
       }
       $mainPage.classList.add('hidden');
       $topBarMenu.classList.remove('hidden');
@@ -239,3 +178,87 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
   }
 });
+
+/*
+UTILITY FUNCTIONS
+*/
+
+function handleSpoonacularAPI() {
+  var favoritesRecipe = {};
+  event.preventDefault();
+  if ($cuisineType.value !== '') {
+    $mainPage.classList.add('hidden');
+    data.value = $cuisineType.value;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://api.spoonacular.com/recipes/random?number=1&apiKey=fa0446638689465c808d67ef46d6f6f0&tags=' + $cuisineType.value);
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', function () {
+      var selectedRecipe = xhr.response.recipes[0];
+      for (var i = 0; i < selectedRecipe.extendedIngredients.length; i++) {
+        favoritesRecipe.ingredients = selectedRecipe.extendedIngredients[i].original;
+      }
+      for (i = 0; i < selectedRecipe.analyzedInstructions[0].steps.length; i++) {
+        favoritesRecipe.steps = selectedRecipe.analyzedInstructions[0].steps[i].step;
+      }
+      favoritesRecipe.ingredients = selectedRecipe.extendedIngredients;
+      favoritesRecipe.steps = selectedRecipe.analyzedInstructions[0].steps;
+      favoritesRecipe.title = selectedRecipe.title;
+      favoritesRecipe.image = selectedRecipe.image;
+      favoritesRecipe.Id = selectedRecipe.id;
+      renderSelectedRecipe(favoritesRecipe);
+      $topBarMenu.classList.remove('hidden');
+      $favoritesButtonDisplay.classList.remove('hidden');
+      $favoritesButtonDisplay.addEventListener('click', appendFavoritesList);
+    });
+    xhr.send();
+  }
+}
+
+function appendFavoritesList() {
+  // eslint-disable-next-line no-undef
+  favoritesRecipe.entryId = data.nextRecipeId++;
+  // eslint-disable-next-line no-undef
+  data.entries.unshift(favoritesRecipe);
+  // renderFavoritesList(favoritesRecipe);
+  var $faveWording = document.querySelector('.fave');
+  var $addWording = document.querySelector('.add');
+  var $check = document.querySelector('.fas');
+  $favoritesLogo.classList.add('hidden');
+  $faveWording.classList.add('hidden');
+  $addWording.classList.remove('hidden');
+  $check.classList.remove('hidden');
+}
+
+function handleSelectedRecipeView(event) {
+  var $entryIdOnClick = parseInt(event.target.getAttribute('data-entry-id'));
+  var $deleter = document.querySelector('.edit-button');
+  $backToFavesList.textContent = 'Back to favorites';
+  $deleteButton.textContent = 'Delete';
+  for (var i = 0; i < data.entries.length; i++) {
+    var targetRecipe = data.entries[i].entryId;
+    if ($entryIdOnClick === targetRecipe && event.target !== $deleter) {
+      var favoritesTitle = document.querySelector('.listing');
+      $favoriteRecipes.classList.add('hidden');
+      $recipeContainer.classList.remove('hidden');
+      renderSelectedRecipe(data.entries[i]);
+      favoritesTitle.classList.add('hidden');
+      $backToFaves.classList.remove('hidden');
+      data.view = 'recipe-view';
+      data.editing = $entryIdOnClick;
+    }
+  }
+}
+
+function handleModalScreen() {
+  for (var i = 0; i < data.entries.length; i++) {
+    var targetRecipe = data.entries[i].entryId;
+    if (data.editing === targetRecipe) {
+      data.entries.splice([i], 1);
+    }
+  }
+  $modalContainer.classList.add('hidden');
+  $recipeContainer.remove();
+  $mainPage.classList.remove('hidden');
+  $topBarMenu.classList.add('hidden');
+  $backToFaves.classList.add('hidden');
+}
