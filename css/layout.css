@@ -82,3 +82,26 @@ p {
   align-items: center;
   flex-direction: column;
 }
+
+.back-to-favorites {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.delete-modal-container {
+  background-color: rgba(74, 77, 77, 0.8);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.delete-button-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 1rem;
+}
