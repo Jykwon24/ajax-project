@@ -1,7 +1,7 @@
 /*
 DOM NODES
 */
-// var $dataView = document.querySelectorAll('[data-view]');
+var $dataView = document.querySelectorAll('[data-view]');
 var $recipeGenerator = document.querySelector('.recipe-generator');
 var $cuisineType = document.querySelector('#cuisine-type');
 var $mainPage = document.querySelector('.body-container');
@@ -13,9 +13,9 @@ var $favoritesButtonDisplay = document.querySelector('.favorites-button');
 var $favoritesLogo = document.querySelector('.bot-hat-logo');
 var $topMenu = document.querySelector('.top-hat-logo');
 var $faveListButton = document.querySelector('.favorites-list');
-var $emptyList = document.querySelector('.empty-list');
+// var $emptyList = document.querySelector('.empty-list');
 var $listingTitle = document.querySelector('.listing');
-var $faveWording = document.querySelector('.fave');
+// var $faveWording = document.querySelector('.fave');
 var $backToFavesList = document.querySelector('.back-button');
 var $deleteButton = document.querySelector('.delete');
 var $backToFaves = document.querySelector('.back-to-favorites');
@@ -115,7 +115,8 @@ $topMenu.addEventListener('click', function (event) {
 });
 
 $faveListButton.addEventListener('click', function (event) {
-  data.view = 'fave-list';
+  switchDataView('favorites-list');
+  appendFavoritesList();
   // $ul.classList.remove('hidden');
   // $topBarMenu.classList.remove('hidden');
   // $mainPage.classList.add('hidden');
@@ -140,12 +141,12 @@ $faveListButton.addEventListener('click', function (event) {
   //   //   $ul.appendChild(result);
   //   // }
   // }
-  window.location.reload();
 });
 
 $backToFavesList.addEventListener('click', function (event) {
-  data.view = 'fave-list';
-  window.location.reload();
+  switchDataView('favorites-list');
+  appendFavoritesList();
+
 });
 
 $deleteButton.addEventListener('click', function (event) {
@@ -158,30 +159,56 @@ $cancelDelete.addEventListener('click', function (event) {
   $modalContainer.classList.add('hidden');
 });
 
-document.addEventListener('DOMContentLoaded', function (event) {
-  if (data.view === 'fave-list') {
-    if (data.entries.length === 0) {
-      data.view = 'fave-list';
-      $mainPage.classList.add('hidden');
-      $topBarMenu.classList.remove('hidden');
-      $recipeContainer.classList.add('hidden');
-      $emptyList.classList.remove('hidden');
-      $faveWording.classList.add('hidden');
-    } else {
-      for (let i = 0; i < data.entries.length; i++) {
-        const result = renderFavoritesList(data.entries[i]);
-        $favoriteRecipes.appendChild(result);
-      }
-      $mainPage.classList.add('hidden');
-      $topBarMenu.classList.remove('hidden');
-      $listingTitle.classList.remove('hidden');
-    }
-  }
-});
+// document.addEventListener('DOMContentLoaded', function (event) {
+//   if (data.view === 'fave-list') {
+//     if (data.entries.length === 0) {
+//       data.view = 'fave-list';
+//       $mainPage.classList.add('hidden');
+//       $topBarMenu.classList.remove('hidden');
+//       $recipeContainer.classList.add('hidden');
+//       $emptyList.classList.remove('hidden');
+//       $faveWording.classList.add('hidden');
+//     } else {
+//       for (let i = 0; i < data.entries.length; i++) {
+//         const result = renderFavoritesList(data.entries[i]);
+//         $favoriteRecipes.appendChild(result);
+//       }
+//       $topBarMenu.classList.remove('hidden');
+//       $listingTitle.classList.remove('hidden');
+//     }
+//   }
+// });
 
 /*
 UTILITY FUNCTIONS
 */
+
+function switchDataView(view) {
+  $dataView.forEach(element => {
+    if (element.dataset.view !== view) {
+      element.classList.add('hidden');
+    } else {
+      element.classList.remove('hidden');
+      data.currentView = view;
+    }
+  });
+}
+
+function appendFavoritesList() {
+  var $emptyMessage = document.querySelector('.list-empty-message');
+  if (data.entries.length === 0) {
+    $emptyMessage.textContent = 'List is empty! Add some recipes to the list!';
+  } else {
+    $favoriteRecipes.innerHTML = '';
+    for (let i = 0; i < data.entries.length; i++) {
+      const result = renderFavoritesList(data.entries[i]);
+      $favoriteRecipes.appendChild(result);
+    }
+    $favoriteRecipes.classList.remove('hidden');
+    $topBarMenu.classList.remove('hidden');
+    $listingTitle.classList.remove('hidden');
+  }
+}
 
 function handleSpoonacularAPI() {
   var favoritesRecipe = {};
@@ -208,25 +235,20 @@ function handleSpoonacularAPI() {
       renderSelectedRecipe(favoritesRecipe);
       $topBarMenu.classList.remove('hidden');
       $favoritesButtonDisplay.classList.remove('hidden');
-      $favoritesButtonDisplay.addEventListener('click', appendFavoritesList);
+      $favoritesButtonDisplay.addEventListener('click', function () {
+        favoritesRecipe.entryId = data.nextRecipeId++;
+        data.entries.unshift(favoritesRecipe);
+        var $faveWording = document.querySelector('.fave');
+        var $addWording = document.querySelector('.add');
+        var $check = document.querySelector('.fas');
+        $favoritesLogo.classList.add('hidden');
+        $faveWording.classList.add('hidden');
+        $addWording.classList.remove('hidden');
+        $check.classList.remove('hidden');
+      });
     });
     xhr.send();
   }
-}
-
-function appendFavoritesList() {
-  // eslint-disable-next-line no-undef
-  favoritesRecipe.entryId = data.nextRecipeId++;
-  // eslint-disable-next-line no-undef
-  data.entries.unshift(favoritesRecipe);
-  // renderFavoritesList(favoritesRecipe);
-  var $faveWording = document.querySelector('.fave');
-  var $addWording = document.querySelector('.add');
-  var $check = document.querySelector('.fas');
-  $favoritesLogo.classList.add('hidden');
-  $faveWording.classList.add('hidden');
-  $addWording.classList.remove('hidden');
-  $check.classList.remove('hidden');
 }
 
 function handleSelectedRecipeView(event) {
