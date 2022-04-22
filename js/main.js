@@ -13,7 +13,7 @@ var $favoritesButtonDisplay = document.querySelector('.favorites-button');
 var $favoritesLogo = document.querySelector('.bot-hat-logo');
 var $topMenu = document.querySelector('.top-hat-logo');
 var $faveListButton = document.querySelector('.favorites-list');
-// var $emptyList = document.querySelector('.empty-list');
+var $emptyList = document.querySelector('.empty-list');
 var $listingTitle = document.querySelector('.listing');
 // var $faveWording = document.querySelector('.fave');
 var $backToFavesList = document.querySelector('.back-button');
@@ -102,7 +102,7 @@ function renderSelectedRecipe(entry) {
 }
 
 /*
-EVENT HANDLERS
+EVENT LISTENERS
 */
 
 $recipeGenerator.addEventListener('submit', handleSpoonacularAPI);
@@ -146,7 +146,6 @@ $faveListButton.addEventListener('click', function (event) {
 $backToFavesList.addEventListener('click', function (event) {
   switchDataView('favorites-list');
   appendFavoritesList();
-
 });
 
 $deleteButton.addEventListener('click', function (event) {
@@ -196,7 +195,11 @@ function switchDataView(view) {
 
 function appendFavoritesList() {
   var $emptyMessage = document.querySelector('.list-empty-message');
+  $favoritesButtonDisplay.classList.add('hidden');
+  $topBarMenu.classList.remove('hidden');
+  $backToFaves.classList.add('hidden');
   if (data.entries.length === 0) {
+    $emptyList.classList.remove('hidden');
     $emptyMessage.textContent = 'List is empty! Add some recipes to the list!';
   } else {
     $favoriteRecipes.innerHTML = '';
@@ -205,7 +208,6 @@ function appendFavoritesList() {
       $favoriteRecipes.appendChild(result);
     }
     $favoriteRecipes.classList.remove('hidden');
-    $topBarMenu.classList.remove('hidden');
     $listingTitle.classList.remove('hidden');
   }
 }
