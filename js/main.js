@@ -7,7 +7,6 @@ var $cuisineType = document.querySelector('#cuisine-type');
 var $mainPage = document.querySelector('.body-container');
 var $favoriteRecipes = document.querySelector('.recipe-display');
 var $recipeContainer = document.querySelector('.recipe-container');
-var $displayContainer = document.querySelector('.container');
 var $topBarMenu = document.querySelector('.top-bar');
 var $favoritesButtonDisplay = document.querySelector('.favorites-button');
 var $favoritesLogo = document.querySelector('.bot-hat-logo');
@@ -97,21 +96,20 @@ function renderSelectedRecipe(entry) {
   $recipeDisplay.appendChild($recipeRow3);
 
   $recipeContainer.appendChild($recipeDisplay);
-  $displayContainer.appendChild($recipeContainer);
-  return $displayContainer;
+  return $recipeContainer;
 }
 
 /*
 EVENT LISTENERS
 */
 
-$recipeGenerator.addEventListener('submit', handleSpoonacularAPI);
+$recipeGenerator.addEventListener('submit', appendRecipe);
 
 $favoriteRecipes.addEventListener('click', handleSelectedRecipeView);
 
 $topMenu.addEventListener('click', function (event) {
-  data.view = 'main';
-  window.location.reload();
+  switchDataView('main-page');
+  $topBarMenu.classList.add('hidden');
 });
 
 $faveListButton.addEventListener('click', function (event) {
@@ -212,6 +210,12 @@ function appendFavoritesList() {
   }
 }
 
+function appendRecipe() {
+  $recipeContainer.classList.remove('hidden');
+  $recipeContainer.innerHTML = '';
+  handleSpoonacularAPI();
+}
+
 function handleSpoonacularAPI() {
   var favoritesRecipe = {};
   event.preventDefault();
@@ -267,7 +271,6 @@ function handleSelectedRecipeView(event) {
       renderSelectedRecipe(data.entries[i]);
       favoritesTitle.classList.add('hidden');
       $backToFaves.classList.remove('hidden');
-      data.view = 'recipe-view';
       data.editing = $entryIdOnClick;
     }
   }
